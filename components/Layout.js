@@ -1,13 +1,12 @@
-import React from 'react'
 import Head from 'next/head'
 import Link from 'next/Link'
-import { useContext } from 'react';
-import { Store } from '../utils/store';
+import React,{ useContext } from 'react';
+import { Store } from '../utils/Store';
 
 
-export default function Layout({title,children}) 
+export default function Layout({children}) 
 {
-  const {state ,dispatch}= useContext(Store);
+  const {state }= useContext(Store);
   const {cart} =state;
   return (
   <>
@@ -20,7 +19,7 @@ export default function Layout({title,children})
         <header>
           <nav className='flex h-12 item-center px-5 justify-between shadow-md'>
             <Link href='/'>
-            <a className='text-3xl font-bold'>Amazon</a>
+            <a className='text-3 xl font-bold'>Amazon</a>
             </Link>
             <div>
               <Link href='/login'>

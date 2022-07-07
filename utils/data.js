@@ -9,6 +9,7 @@ products : [
         brand:'Raymonds',
         rating:4.5,
         description:'A popular shirt',
+        countInStock:20,
     },    {
         name:'Fit-Shirts',
         slug:'fit-shirt',
@@ -18,6 +19,7 @@ products : [
         brand:'Peter England',
         rating:4.5,
         description:'A popular  fitting shirt',
+        countInStock:20,
     },
     {
         name:'Jeans',
@@ -28,6 +30,7 @@ products : [
         brand:'Killer',
         rating:4,
         description:'Best design jeans',
+        countInStock:20,
     },
 ],
 };

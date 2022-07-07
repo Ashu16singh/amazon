@@ -1,20 +1,27 @@
 import Link from "next/link";
-import React, { useContext } from "react";
+import React,{useContext} from "react";
 import Layout from "../components/Layout";
-import { Store } from "../utils/Store";
+import { Store} from "../utils/Store";
 import Image from "next/image";
-import { XCircleIcon } from "@heroicons/react/outline";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { XCircleIcon } from "@heroicons/react/outline"
 
 export default function CartScreen() {
-  const { state, dispatch } = useContext(Store);
+  const {state, dispatch} = useContext(Store);
+  const router = useRouter();
   const {
-    cart: { cartItems },
+    cart: { cartItems }
   } = state;
 
   const removeItemHandler = (item) => {
-    dispatch({ type: "CART_REMOVE_ITEM", payload: item });
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
   };
+
+  const updateCartHandler =(item, qty) => {
+    const quantity= Number(qty); 
+    dispatch({ type: 'CART_ADD_ITEM', payload:{...item , quantity} });
+  };
+  
 
   return (
     <Layout title="Shopping Cart">
@@ -37,21 +44,29 @@ export default function CartScreen() {
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item._slug} className="border-b">
+                  <tr key={item.slug} className="border-b">
                     <td>
-                      <Link hreg={`/product/${item.slug}`}>
+                      <Link href={`/product/${item.slug}`}>
                         <a className="flex items-center">
                           <Image
-                            src={product.image}
-                            alt={product.name}
+                            src={item.image}
+                            alt={item.name}
                             width={50}
                             height={50}
-                          ></Image>{" "}
+                          ></Image>
                           &nbsp; {item.name}
                         </a>
                       </Link>
                     </td>
-                    <td className="p-5 text-right">{item.quantity}</td>
+                    <td className="p-5 text-right">
+                      <select value={item.countInstock} onChange={(e) =>updateCartHandler(item ,e.target.value)}>
+                        {[...Array(item.countInStock).keys()].map((x)=>(
+                          <option key={x+1} value={x+1} >
+                          {x+1}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
                     <td className="p-5 text-right">{item.price}</td>
                     <td className="p-5 text-center">
                       <button onClick={() => removeItemHandler(item)}>
@@ -67,7 +82,7 @@ export default function CartScreen() {
                 <li>
                   <div className="pb-3 text-xl font-semibold">
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)})
-                    {""}: ₹
+                    {' '}: ₹
                     {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
                   </div>
                 </li>
@@ -87,4 +102,3 @@ export default function CartScreen() {
     </Layout>
   );
 }
-//  export default dynamic(() =>Promise.resolve(CartScreen), {ssr:false});

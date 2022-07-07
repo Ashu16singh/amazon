@@ -4,13 +4,15 @@ import Layout from "../../components/Layout";
 import data from "../../utils/data";
 import Link from "next/dist/client/link";
 import Image from "next/image";
-import { Store } from "../../utils/store";
+import { Store } from "../../utils/Store";
 
 export default function ProductScreen() {
-  const router = useRouter();
   const { state, dispatch } = useContext(Store);
+  const router = useRouter();
   const { query } = useRouter();
-  const { slug } = query;
+  const { slug } = query; 
+  
+  
   const product = data.products.find((x) => x.slug === slug);
   if (!product) {
     return <div>Product Not Found</div>;
@@ -20,10 +22,10 @@ export default function ProductScreen() {
     const quantity = existItem ? existItem.quantity + 1 : 1;
 
      if(product.countInStock <quantity){
-      alert('Sorry,Product is out of stock');
+      alert('Sorry,  Product is out of stock');
       return ;
      }
-    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity} });
      router.push('/cart');
   };
 
